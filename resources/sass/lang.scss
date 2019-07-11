@@ -1,0 +1,29 @@
+.lang-pic {
+  width: 10%;
+  margin-top: 8px;
+}
+
+.login-lang-pic {
+  display: block;
+  margin: auto;
+  width: 25%;
+}
+
+.gray-scale {
+  filter: grayscale(1);
+}
+
+.user-section {
+  width: 250% !important;
+}
+
+.lang-section {
+  background-color: #f9f9f9;
+
+  div {
+    padding: 0 10%;
+  }
+}
+.login-body{
+  padding-bottom: 0 !important;
+}
