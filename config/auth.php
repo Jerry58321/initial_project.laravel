@@ -67,7 +67,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'aes256',
+            'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
 
