@@ -3,7 +3,7 @@
 @section('content')
     <div class="login-logo">
         <b>
-            12312
+            {{ trans('layout.title') }}
         </b>
     </div>
     <div class="login-box-body login-body">
