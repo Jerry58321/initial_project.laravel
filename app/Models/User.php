@@ -14,7 +14,7 @@ class User extends Authenticatable
 
     protected $table = 'user';
     protected $guarded = ['id'];
-    protected $hidden = ['password', 'api_key', 'parents', 'left_point', 'right_point', 'remember_token'];
+    protected $hidden = ['password', 'api_key', 'parents', 'remember_token'];
 
     protected $casts = [
         'enable_link' => 'bool',
