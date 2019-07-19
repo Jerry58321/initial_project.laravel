@@ -22,6 +22,7 @@
             @include('includes.sidebar')
 
             <div class="content-wrapper">
+                @include('includes.message.box')
                 @yield('content')
             </div>
 

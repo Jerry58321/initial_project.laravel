@@ -13,6 +13,14 @@
 
 Route::get('/', 'DashboardController@index');
 
-Route::get('login', 'Auth\LoginController@showLoginForm');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'platforms'], function () {
+        Route::resource('database', 'PlatformController');
+        Route::get('setting', 'PlatformController@setting')->name('platform.setting');
+    });
+
+});
