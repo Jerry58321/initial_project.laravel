@@ -11,6 +11,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{ route('database.index') }}"><i class="fa fa-circle-o"></i>{{ trans('sidebar.platform_category.platform_database_list') }}</a></li>
+                    <li><a href="{{ route('platform.setting') }}"><i class="fa fa-circle-o"></i>{{ trans('sidebar.platform_category.platform_setting') }}</a></li>
                 </ul>
             </li>
         </ul>

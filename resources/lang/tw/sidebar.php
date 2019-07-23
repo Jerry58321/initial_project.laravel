@@ -8,6 +8,6 @@ return [
 
     'platform_category' => [
         'platform_database_list' => '站臺資料庫列表',
-
+        'platform_setting' => '站臺設定',
     ]
 ];

@@ -56,6 +56,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'ddfg_url' => env('DDFG_URL', 'http://134.159.225.137/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -122,6 +124,8 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+
+    'ddfg_key' => env('DDFG_KEY', '50d40fced6f44ce8f814bb2ce76ea4b8'),
 
     /*
     |--------------------------------------------------------------------------

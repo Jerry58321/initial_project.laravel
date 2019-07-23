@@ -21,6 +21,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'platforms'], function () {
         Route::resource('database', 'PlatformController');
         Route::get('setting', 'PlatformController@setting')->name('platform.setting');
+        Route::post('kick-member-all', 'PlatformController@kickMemberAll')->name('platform.kickMemberAll');
+        Route::post('toggle-maintain', 'PlatformController@toggleMaintain')->name('platform.toggleMaintain');
     });
 
 });

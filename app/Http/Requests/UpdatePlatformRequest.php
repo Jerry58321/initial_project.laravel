@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
-class CreatePlatformRequest extends FormRequest
+class UpdatePlatformRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class CreatePlatformRequest extends FormRequest
 
         return [
             'name'       => 'required|max:255',
-            'db_name'    => 'required|max:50|unique:platform_database,database',
+            'db_name'    => 'required|max:50',
             'redis_code' => 'required|integer',
             'status'     => "required|in:{$statusTypes}",
             'note'       => 'max:255',
@@ -42,13 +42,11 @@ class CreatePlatformRequest extends FormRequest
             'name.max'            => trans('message.max_string', ['item' => trans('platform.name'), 'value' => 255]),
             'db_name.required'    => trans('message.required', ['item' => trans('platform.db_name')]),
             'db_name.max'         => trans('message.max_string', ['item' => trans('platform.db_name'), 'value' => 50]),
-            'db_name.unique'      => trans('message.unique', ['item' => trans('platform.db_name')]),
             'redis_code.required' => trans('message.required', ['item' => trans('platform.redis_code')]),
             'redis_code.integer'  => trans('message.integer', ['item' => trans('platform.redis_code')]),
             'status.required'     => trans('message.required', ['item' => trans('platform.status')]),
             'status.in'           => trans('message.in', ['item' => trans('platform.status')]),
-            'note.max'            => trans('auth.error_format_password',
-                ['item' => trans('platform.note'), 'value' => 255]),
+            'note.max'            => trans('auth.error_format_password', ['item' => trans('platform.note'), 'value' => 255]),
         ];
     }
 
