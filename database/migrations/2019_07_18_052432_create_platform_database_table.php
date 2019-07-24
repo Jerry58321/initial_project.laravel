@@ -20,7 +20,7 @@ class CreatePlatformDatabaseTable extends Migration
                 $table->bigIncrements('id')->unsigned();
                 $table->string('name', 255);
                 $table->string('database', 50);
-                $table->integer('redis_code');
+                $table->integer('redis_database');
                 $table->enum('status', ['enable', 'disable'])->default('enable');
                 $table->string('note')->nullable();
                 $table->timestamps();

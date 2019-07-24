@@ -27,26 +27,26 @@ class UpdatePlatformRequest extends FormRequest
         $statusTypes = implode(',', array_keys(trans('platform.status_types')));
 
         return [
-            'name'       => 'required|max:255',
-            'db_name'    => 'required|max:50',
-            'redis_code' => 'required|integer',
-            'status'     => "required|in:{$statusTypes}",
-            'note'       => 'max:255',
+            'name'           => 'required|max:255',
+            'db_name'        => 'required|max:50',
+            'redis_database' => 'required|integer',
+            'status'         => "required|in:{$statusTypes}",
+            'note'           => 'max:255',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required'       => trans('message.required', ['item' => trans('platform.name')]),
-            'name.max'            => trans('message.max_string', ['item' => trans('platform.name'), 'value' => 255]),
-            'db_name.required'    => trans('message.required', ['item' => trans('platform.db_name')]),
-            'db_name.max'         => trans('message.max_string', ['item' => trans('platform.db_name'), 'value' => 50]),
-            'redis_code.required' => trans('message.required', ['item' => trans('platform.redis_code')]),
-            'redis_code.integer'  => trans('message.integer', ['item' => trans('platform.redis_code')]),
-            'status.required'     => trans('message.required', ['item' => trans('platform.status')]),
-            'status.in'           => trans('message.in', ['item' => trans('platform.status')]),
-            'note.max'            => trans('auth.error_format_password', ['item' => trans('platform.note'), 'value' => 255]),
+            'name.required'           => trans('message.required', ['item' => trans('platform.name')]),
+            'name.max'                => trans('message.max_string', ['item' => trans('platform.name'), 'value' => 255]),
+            'db_name.required'        => trans('message.required', ['item' => trans('platform.db_name')]),
+            'db_name.max'             => trans('message.max_string', ['item' => trans('platform.db_name'), 'value' => 50]),
+            'redis_database.required' => trans('message.required', ['item' => trans('platform.redis_database')]),
+            'redis_database.integer'  => trans('message.integer', ['item' => trans('platform.redis_database')]),
+            'status.required'         => trans('message.required', ['item' => trans('platform.status')]),
+            'status.in'               => trans('message.in', ['item' => trans('platform.status')]),
+            'note.max'                => trans('auth.error_format_password', ['item' => trans('platform.note'), 'value' => 255]),
         ];
     }
 

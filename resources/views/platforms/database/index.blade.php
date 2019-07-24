@@ -15,7 +15,7 @@
                 <th width="50">{{ trans('platform.status') }}</th>
                 <th>{{ trans('platform.name') }}</th>
                 <th>{{ trans('platform.db_name') }}</th>
-                <th>{{ trans('platform.redis_code') }}</th>
+                <th>{{ trans('platform.redis_database') }}</th>
                 <th>{{ trans('platform.operate') }}</th>
             </tr>
             </thead>
@@ -28,7 +28,7 @@
                     </td>
                     <td>{{ $database->name }}</td>
                     <td>{{ $database->database }}</td>
-                    <td>{{ $database->redis_code }}</td>
+                    <td>{{ $database->redis_database }}</td>
                     <td>
                         <a href="{{ route('database.edit', $database->id) }}" class="btn btn-primary btn-xs">{{ trans('platform.edit') }}</a>
                         <button class="btn btn-danger btn-xs show-del-dialog"

@@ -4,20 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\PlatformDatabaseExistException;
 use App\Http\Requests\CreatePlatformRequest;
+use App\Http\Requests\PlatformApiKeyRequest;
 use App\Http\Requests\PlatformMaintainRequest;
 use App\Http\Requests\UpdatePlatformRequest;
 use App\Jobs\SlackReport;
-use App\Services\PlatformService;
+use App\Services\{PlatformService, RedisService};
 use App\Models\PlatformDatabase;
+use App\RedisIronMan\RedisIronMan;
+use Illuminate\Support\Facades\Redis;
 
 class PlatformController extends Controller
 {
     private $platformService;
+    private $redisService;
 
     public function __construct(
-        PlatformService $platformService
+        PlatformService $platformService,
+        RedisService $redisService
     ) {
         $this->platformService = $platformService;
+        $this->redisService = $redisService;
     }
 
     public function index()
@@ -40,11 +46,11 @@ class PlatformController extends Controller
                 'database' => $request->input('db_name'),
             ],
                 [
-                    'name'       => $request->input('name'),
-                    'database'   => $request->input('db_name'),
-                    'redis_code' => $request->input('redis_code'),
-                    'status'     => $request->input('status'),
-                    'note'       => $request->input('note')
+                    'name'           => $request->input('name'),
+                    'database'       => $request->input('db_name'),
+                    'redis_database' => $request->input('redis_database'),
+                    'status'         => $request->input('status'),
+                    'note'           => $request->input('note')
                 ]);
 
             if (!$platformDatabase->wasRecentlyCreated) {
@@ -78,11 +84,11 @@ class PlatformController extends Controller
                 throw new PlatformDatabaseExistException();
             }
             $database->update([
-                'name'       => $request->input('name'),
-                'database'   => $databaseName,
-                'redis_code' => $request->input('redis_code'),
-                'status'     => $request->input('status'),
-                'note'       => $request->input('note')
+                'name'           => $request->input('name'),
+                'database'       => $databaseName,
+                'redis_database' => $request->input('redis_databse'),
+                'status'         => $request->input('status'),
+                'note'           => $request->input('note')
             ]);
             $result = ['message_success' => trans('message.update_success')];
         } catch (PlatformDatabaseExistException $e) {
@@ -124,7 +130,7 @@ class PlatformController extends Controller
             }
             $result = ['message_success' => trans('message.event_success', ['event' => trans('platform.kick_member_all')])];
         } catch (\Exception $e) {
-            $result = ['message_success' => trans('message.event_failed', ['event' => trans('platform.kick_member_all')])];
+            $result = ['message_fail' => trans('message.event_failed', ['event' => trans('platform.kick_member_all')])];
             dispatch(new SlackReport('Error', 'kickMemberAll', $e->getMessage()));
         }
 
@@ -139,10 +145,30 @@ class PlatformController extends Controller
             foreach(explode(',', env('DDFG_PLATFORM_GAME')) as $platform) {
                 $this->platformService->toggleMaintainPlatform($platform, $status);
             }
-            $result = ['message_success' => trans('message.event_success', ['event' => trans('platform.maintain_type.' . $status)])];
+            $result = ['message_success' => trans('message.event_success', ['event' => trans('platform.toggle_maintain.' . $status)])];
         } catch (\Exception $e) {
-            $result = ['message_success' => trans('message.event_failed', ['event' => trans('platform.maintain_type.' . $status)])];
+            $result = ['message_fail' => trans('message.event_failed', ['event' => trans('platform.toggle_maintain.' . $status)])];
             dispatch(new SlackReport('Error', 'toggleMaintainPlatform', $e->getMessage()));
+        }
+
+        return redirect()->back()->with($result);
+    }
+
+    public function toggleApiKey(PlatformApiKeyRequest $request)
+    {
+        $status = $request->input('status');
+        try {
+            $redisDatabase = PlatformDatabase::where('status', 'enable')->pluck('redis_database')->toArray();
+            $redisDatabase[] = env('REDIS_DB');
+
+            (new RedisIronMan())->setDatabase($redisDatabase)->doAction(function () use ($status) {
+                $status == 'enable' ? Redis::lpush('whitelist_api_key', env('DDFG_ADMIN_API_KEY')) : Redis::del('whitelist_api_key');
+            });
+
+            RedisIronMan::resetDatabase();
+            $result = ['message_success' => trans('message.event_success', ['event' => trans('platform.toggle_api_key.' . $status)])];
+        } catch (\Exception $e) {
+            $result = ['message_fail' => trans('message.event_failed', ['event' => trans('platform.toggle_api_key.' . $status)])];
         }
 
         return redirect()->back()->with($result);

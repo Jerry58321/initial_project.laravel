@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('setting', 'PlatformController@setting')->name('platform.setting');
         Route::post('kick-member-all', 'PlatformController@kickMemberAll')->name('platform.kickMemberAll');
         Route::post('toggle-maintain', 'PlatformController@toggleMaintain')->name('platform.toggleMaintain');
+        Route::post('toggle-api-key', 'PlatformController@toggleApiKey')->name('platform.toggleApiKey');
     });
 
 });

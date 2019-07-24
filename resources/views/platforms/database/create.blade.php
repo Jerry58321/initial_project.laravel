@@ -25,10 +25,10 @@
                                     <input type="text" class="form-control" name="db_name" value="{{ old('db_name') }}">
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('redis_code') ? ' has-error' : '' }}">
-                                <label class="col-sm-4 control-label"><span class="text-red">＊</span>{{ trans('platform.redis_code') }}</label>
+                            <div class="form-group{{ $errors->has('redis_database') ? ' has-error' : '' }}">
+                                <label class="col-sm-4 control-label"><span class="text-red">＊</span>{{ trans('platform.redis_database') }}</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="redis_code" value="{{ old('redis_code') }}">
+                                    <input type="text" class="form-control" name="redis_database" value="{{ old('redis_database') }}">
                                 </div>
                             </div>
                             <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">

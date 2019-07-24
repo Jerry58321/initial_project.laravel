@@ -92,18 +92,6 @@ class Querent implements ArrayAccess
         }
     }
 
-    public static function changeDatabase(string $database)
-    {
-        \DB::purge(config('database.default'));
-        \Config::set('database.connections.mysql.database', $database);
-    }
-
-    public static function resetDefaultDatabase()
-    {
-        \DB::purge(config('database.default'));
-        \Config::set('database.connections.mysql.database', env('DB_DATABASE', 'forge'));
-    }
-
     /**
      * @var Model
      */
