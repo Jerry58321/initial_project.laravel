@@ -8,7 +8,7 @@ use App\Http\Requests\PlatformApiKeyRequest;
 use App\Http\Requests\PlatformMaintainRequest;
 use App\Http\Requests\UpdatePlatformRequest;
 use App\Jobs\SlackReport;
-use App\Services\{PlatformService, RedisService};
+use App\Services\PlatformService;
 use App\Models\PlatformDatabase;
 use App\RedisIronMan\RedisIronMan;
 use Illuminate\Support\Facades\Redis;
@@ -16,14 +16,11 @@ use Illuminate\Support\Facades\Redis;
 class PlatformController extends Controller
 {
     private $platformService;
-    private $redisService;
 
     public function __construct(
-        PlatformService $platformService,
-        RedisService $redisService
+        PlatformService $platformService
     ) {
         $this->platformService = $platformService;
-        $this->redisService = $redisService;
     }
 
     public function index()
@@ -162,7 +159,12 @@ class PlatformController extends Controller
             $redisDatabase[] = env('REDIS_DB');
 
             (new RedisIronMan())->setDatabase($redisDatabase)->doAction(function () use ($status) {
-                $status == 'enable' ? Redis::lpush('whitelist_api_key', env('DDFG_ADMIN_API_KEY')) : Redis::del('whitelist_api_key');
+                if ($status == 'enable') {
+                    Redis::del('whitelist_api_key');
+                    Redis::lpush('whitelist_api_key', env('DDFG_ADMIN_API_KEY'));
+                } else {
+                    Redis::del('whitelist_api_key');
+                }
             });
 
             RedisIronMan::resetDatabase();
